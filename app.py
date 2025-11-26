@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template
 import pandas as pd
 import requests
+import os
 from indicators import calculate_rsi, calculate_ema, calculate_macd
 from config import API_KEY, NEWS_API_KEY, SYMBOL, TIMEFRAMES, NEWS_THRESHOLD
 
@@ -98,7 +99,12 @@ def signal():
 # ------------------- Frontend Page -------------------
 @app.route("/")
 def index():
+
+    if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
     return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
+
