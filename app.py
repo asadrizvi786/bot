@@ -58,7 +58,7 @@ def generate_signal(rsi, ema20, ema50, macd, macd_signal, news_sentiment):
     if abs(news_sentiment) > NEWS_THRESHOLD:
         votes_buy *= 0.5
         votes_sell *= 0.5
-    confidence = int((max(votes_buy,votes_sell)/3)*100)
+    confidence = int((max(votes_buy, votes_sell) / 3) * 100)
     if votes_buy > votes_sell: return "BUY", confidence
     elif votes_sell > votes_buy: return "SELL", confidence
     else: return "NO TRADE", confidence
@@ -99,12 +99,9 @@ def signal():
 # ------------------- Frontend Page -------------------
 @app.route("/")
 def index():
-
-    if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
     return render_template("index.html")
 
+# ------------------- Run Flask for Railway -------------------
 if __name__ == "__main__":
-    app.run(debug=True)
-
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
