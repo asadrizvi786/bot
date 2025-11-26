@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>XAU/USD Live Signals</title>
+<style>
+body{font-family:sans-serif;margin:20px;}
+.card{border:1px solid #ccc;padding:15px;margin-bottom:10px;border-radius:5px;}
+.buy{color:green;font-weight:bold;}
+.sell{color:red;font-weight:bold;}
+.no{color:gray;font-weight:bold;}
+</style>
+</head>
+<body>
+<h2>XAU/USD Live Trading Signals</h2>
+<div id="signals"></div>
+
+<script>
+async function fetchSignals(){
+    try{
+        const res = await fetch('/signal');
+        const data = await res.json();
+        const container = document.getElementById('signals');
+        container.innerHTML = '';
+        data.forEach(item=>{
+            let cls = item.signal=='BUY'?'buy':item.signal=='SELL'?'sell':'no';
+            container.innerHTML += `
+            <div class="card">
+                <strong>${item.timeframe}</strong><br>
+                RSI: ${item.rsi}, EMA20: ${item.ema20}, EMA50: ${item.ema50}, MACD: ${item.macd}<br>
+                News Sentiment: ${item.news_sentiment}<br>
+                Signal: <span class="${cls}">${item.signal}</span> | Confidence: ${item.confidence}%
+            </div>`;
+        });
+    } catch(e){ console.log(e); }
+}
+
+// Fetch initially
+fetchSignals();
+// Refresh every 60 seconds
+setInterval(fetchSignals, 60000);
+</script>
+</body>
+</html>
